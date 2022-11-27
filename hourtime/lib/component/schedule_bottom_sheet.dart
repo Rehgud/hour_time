@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hourtime/component/custom_text_field.dart';
+import 'package:hourtime/model/category_color.dart';
+import 'package:hourtime/database/drift_database.dart';
 import 'package:path/path.dart';
 
 import '../const/colors.dart';
@@ -60,7 +63,25 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                         },
                       ),
                       SizedBox(height: 16.0), // 여백 만들어주기
-                      _ColorPicker(),
+                        FutureBuilder<List<CategoryColor>>(
+                          future: GetIt.I<LocalDatabase>().getCategoryColors(),
+                          builder: (content, snapshot){
+                            print(snapshot.data);
+
+                            return _ColorPicker(
+                              colors: snapshot.hasData ?
+                                  snapshot.data!.map(
+                                    (e) => Color(
+                                      int.parse(
+                                      'FF${e.hexCode}',
+                                      radix: 16,
+                                    ),
+                                  ),
+                                ).toList()
+                                 : [],
+                            );
+                          },
+                        ),
                        SizedBox(height: 8.0), // 여백
                       _SaveButton(
                         onPressed: onSavePressed,
@@ -150,7 +171,7 @@ class _ColorPicker extends StatelessWidget {
     return Wrap(
       spacing: 8.0, // 양옆의 간격을 정해준다.
       runSpacing: 8.0, // 위 아래의 간격을 정해준다.
-      children: colors.map((e) => renderColor(e)).toList();
+      children: colors.map((e) => renderColor(e)).toList(),
     );
   }
 
