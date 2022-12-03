@@ -30,10 +30,10 @@ class TodayBanner extends StatelessWidget {
                 '${selectedDay.year}년 ${selectedDay.month}월 ${selectedDay.day}일',
                 style: textstyle,
               ),
-              Text(
-                '$scheduleCount개',
-                style: textstyle,
-              ),
+              //Text(
+                //'$scheduleCount개',
+                // style: textstyle,
+             // ),
             ],
           ),
         ),
